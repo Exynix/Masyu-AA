@@ -1,4 +1,4 @@
-from Proyect_Masyu.Model.CellTypesEnumerations import CellTypesEnum
+from cell_types_enum import CellTypesEnum
 
 class BoardCell:
 
