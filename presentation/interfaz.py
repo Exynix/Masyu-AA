@@ -7,25 +7,53 @@ def on_celda_click(event, canvas, lineas_dibujadas):
     fila = y // 50
     celda = (fila, columna)  # Utilizamos índices base 0 para la celda
 
-     # Imprime las coordenadas de la celda donde se hizo clic
-    print(f"Clic en celda: Fila {fila + 1}, Columna {columna + 1}")
+    if event.num == 1:  # Clic izquierdo, manejo de líneas
+        if celda in lineas_dibujadas:
+            id_linea, estado_linea = lineas_dibujadas[celda]
+            canvas.delete(id_linea)  # Elimina la línea existente
 
-    # Si ya existe una línea en esta celda, determinar la acción basada en el estado actual
-    if celda in lineas_dibujadas:
-        id_linea, estado_linea = lineas_dibujadas[celda]
-        canvas.delete(id_linea)  # Elimina la línea existente
-        
-        if estado_linea == 'vertical':
-            # Si la línea actual es vertical, dibujar una horizontal
-            id_linea = canvas.create_line(50 * columna, 50 * fila + 25, 50 * (columna + 1), 50 * fila + 25, fill="black", width=2)
-            lineas_dibujadas[celda] = (id_linea, 'horizontal')
+            if estado_linea == 'vertical':
+                id_linea = canvas.create_line(50 * columna, 50 * fila + 25, 50 * (columna + 1), 50 * fila + 25, fill="black", width=2)
+                lineas_dibujadas[celda] = (id_linea, 'horizontal')
+            else:
+                del lineas_dibujadas[celda]
         else:
-            # Si la línea es horizontal (o en cualquier otro estado), eliminar la línea
-            del lineas_dibujadas[celda]
+            id_linea = canvas.create_line(50 * columna + 25, 50 * fila, 50 * columna + 25, 50 * (fila + 1), fill="black", width=2)
+            lineas_dibujadas[celda] = (id_linea, 'vertical')
+    elif event.num == 3:  # Clic derecho, dibujar/rotar/eliminar curva
+        dibujar_rotar_eliminar_curva(canvas, fila, columna, lineas_dibujadas)
+
+def dibujar_rotar_eliminar_curva(canvas, fila, columna, lineas_dibujadas):
+    # Identifica si ya existe una curva y su estado
+    if (fila, columna, 'curva') in lineas_dibujadas:
+        ids_curva, estado_curva = lineas_dibujadas[(fila, columna, 'curva')]
+        # Elimina las líneas actuales de la curva
+        for id_curva in ids_curva:
+            canvas.delete(id_curva)
+        if estado_curva < 270:
+            # Incrementa la rotación de la curva en 90 grados
+            estado_curva += 90
+        else:
+            # Elimina la curva después de la cuarta rotación
+            del lineas_dibujadas[(fila, columna, 'curva')]
+            return  # Sale de la función para no dibujar una nueva curva
     else:
-        # No existe línea: dibujar una línea vertical
-        id_linea = canvas.create_line(50 * columna + 25, 50 * fila, 50 * columna + 25, 50 * (fila + 1), fill="black", width=2)
-        lineas_dibujadas[celda] = (id_linea, 'vertical')
+        estado_curva = 0  # Estado inicial de la curva
+    
+    # Calcula las posiciones iniciales y finales para las dos líneas basadas en el estado de rotación
+    x1, y1 = 50 * columna, 50 * fila
+    if estado_curva == 0:
+        coords = [(x1 + 25, y1, x1 + 25, y1 + 25), (x1 + 25, y1 + 25, x1 + 50, y1 + 25)]  # Abajo y luego derecha
+    elif estado_curva == 90:
+        coords = [(x1, y1 + 25, x1 + 25, y1 + 25), (x1 + 25, y1 + 25, x1 + 25, y1)]  # Izquierda y luego arriba
+    elif estado_curva == 180:
+        coords = [(x1 + 25, y1 + 50, x1 + 25, y1 + 25), (x1 + 25, y1 + 25, x1, y1 + 25)]  # Arriba y luego izquierda
+    elif estado_curva == 270:
+        coords = [(x1 + 50, y1 + 25, x1 + 25, y1 + 25), (x1 + 25, y1 + 25, x1 + 25, y1 + 50)]  # Derecha y luego abajo
+    
+    # Dibuja las nuevas líneas de la curva
+    ids_curva = [canvas.create_line(*coord, fill="black", width=2) for coord in coords]
+    lineas_dibujadas[(fila, columna, 'curva')] = (ids_curva, estado_curva)
 
 
 def limpiar_tablero(canvas, lineas_dibujadas):
@@ -34,43 +62,36 @@ def limpiar_tablero(canvas, lineas_dibujadas):
     lineas_dibujadas.clear()
 
 def crear_interfaz(num_filas_columnas, configuraciones):
-    global lineas_dibujadas
     lineas_dibujadas = {}
 
     raiz = Tk()
     raiz.title("Masyu")
 
-    # Organiza la interfaz usando un Frame principal
     miFrame = Frame(raiz)
     miFrame.pack(expand=True, fill="both", padx=20, pady=20)
 
-    # Frame para contener los botones y organizarlos horizontalmente
     botonesFrame = Frame(miFrame)
     botonesFrame.pack(side=TOP, pady=10)
 
-    # Botón para limpiar el tablero, colocado dentro del botonesFrame
     boton_limpiar = Button(botonesFrame, text="Limpiar Tablero", command=lambda: limpiar_tablero(canvas, lineas_dibujadas))
     boton_limpiar.pack(side=LEFT, padx=5)
 
-    # Botón de Jugador Sintético, colocado al lado del botón Limpiar Tablero
     boton_jugador_sintetico = Button(botonesFrame, text="Jugador Sintético")
     boton_jugador_sintetico.pack(side=LEFT, padx=5)
 
     textoLabel = Label(miFrame, text="Masyu!", fg="red", font=("Comic Sans MS", 18))
     textoLabel.pack(side=TOP, pady=(0, 20))
 
-    # Canvas para el tablero, también en el Frame principal
     canvas = Canvas(miFrame, width=50*num_filas_columnas, height=50*num_filas_columnas, bg="white")
     canvas.pack()
 
     canvas.bind("<Button-1>", lambda event: on_celda_click(event, canvas, lineas_dibujadas))
+    canvas.bind("<Button-3>", lambda event: on_celda_click(event, canvas, lineas_dibujadas))
 
-    # Dibuja la cuadrícula
     for i in range(num_filas_columnas):
         for j in range(num_filas_columnas):
             canvas.create_rectangle(50 * j, 50 * i, 50 * (j + 1), 50 * (i + 1), outline="grey")
 
-    # Dibuja las perlas
     for fila, columna, tipo in (configuracion.strip().split(',') for configuracion in configuraciones):
         if tipo == '1':  # Perla blanca
             canvas.create_oval(50 * (int(columna) - 1) + 10, 50 * (int(fila) - 1) + 10, 50 * int(columna) - 10, 50 * int(fila) - 10, fill="white", outline="black")
@@ -78,6 +99,13 @@ def crear_interfaz(num_filas_columnas, configuraciones):
             canvas.create_oval(50 * (int(columna) - 1) + 10, 50 * (int(fila) - 1) + 10, 50 * int(columna) - 10, 50 * int(fila) - 10, fill="black")
 
     return raiz
+
+
+# Ejemplo de cómo podrías usar `crear_interfaz`
+# num_filas_columnas, configuraciones = 10, ["1,1,1", "2,2,2"]  # Esto debería ser leído de un archivo o algo similar
+# app = crear_interfaz(num_filas_columnas, configuraciones)
+# app.mainloop()
+
 
 
 
