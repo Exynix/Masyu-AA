@@ -2,26 +2,7 @@
 
 from tkinter import *
 
-# Función para leer el archivo de configuración
-def leer_archivo(nombre_archivo):
-    try:
-        with open(nombre_archivo, 'r') as archivo:
-            primera_linea = archivo.readline().strip()
-            num_filas_columnas = int(primera_linea)
-            configuraciones = archivo.readlines()
-        return num_filas_columnas, configuraciones
-    except FileNotFoundError:
-        print("No se encontro el archivo, revise que haya escrito bien el nombre y que el archivo este en la carpeta del programa.")
-        return 0, []
-
-# Pedir al usuario que ingrese el nombre del archivo por la consola
-nombre_archivo = input("Ingrese el nombre del archivo con el que desea jugar (incluya el .txt en el nombre): ")
-
-# Leer el archivo de configuración basado en el nombre ingresado
-num_filas_columnas, configuraciones = leer_archivo(nombre_archivo)
-
-# Solo proceder si se ha podido leer el archivo correctamente
-if num_filas_columnas > 0:
+def crear_interfaz(num_filas_columnas, configuraciones):
     raiz = Tk()
     raiz.title("Masyu")
 
@@ -48,7 +29,7 @@ if num_filas_columnas > 0:
             elif forma == 2:
                 canvas.create_oval(10, 10, 40, 40, fill="black")
 
-    raiz.mainloop()
+    return raiz
 
 
 
