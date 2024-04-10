@@ -11,10 +11,12 @@ def initiateGame():
     
     if num_filas_columnas > 0:
         initial_board = createBoard(num_filas_columnas, configuraciones)
-        print_game_board(initial_board)
+        root = interfaz.crear_interfaz(initial_board)
+        root.mainloop()
     else:
         print("Error al leer el archivo de configuración. El tamaño indicado de la matriz es 0 o negativo.")
     
+   
 
 # --------------------------------------------------------------- 
 """
