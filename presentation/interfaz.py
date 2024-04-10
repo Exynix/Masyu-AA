@@ -61,6 +61,7 @@ def limpiar_tablero(canvas, lineas_dibujadas):
         canvas.delete(id_linea)
     lineas_dibujadas.clear()
 
+
 def crear_interfaz(num_filas_columnas, configuraciones):
     lineas_dibujadas = {}
 
@@ -79,7 +80,7 @@ def crear_interfaz(num_filas_columnas, configuraciones):
     boton_jugador_sintetico = Button(botonesFrame, text="Jugador Sintético")
     boton_jugador_sintetico.pack(side=LEFT, padx=5)
 
-    textoLabel = Label(miFrame, text="Masyu!", fg="red", font=("Comic Sans MS", 18))
+    textoLabel = Label(miFrame, text="Masyu!", fg="red", font=("System", 18))
     textoLabel.pack(side=TOP, pady=(0, 20))
 
     canvas = Canvas(miFrame, width=50*num_filas_columnas, height=50*num_filas_columnas, bg="white")

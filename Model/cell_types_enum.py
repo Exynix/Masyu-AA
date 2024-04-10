@@ -1,3 +1,4 @@
+# Cell_types_enum.py
 from enum import Enum
 
 class CellTypesEnum(Enum):
