@@ -61,9 +61,8 @@ class MasyuGameGUI:
         # Right-click to erase a line
         if event.num == 3:
             self.erase_line(current_cell)
-            # Redraw the grid line to ensure consistency in the visual representation
             self.canvas.create_rectangle(column * cell_size, row * cell_size,
-                                         (column + 1) * cell_size, (row + 1) * cell_size, outline="grey")
+                                        (column + 1) * cell_size, (row + 1) * cell_size, outline="grey")
             return
 
         # Increment click count or initialize if not already set
@@ -72,21 +71,33 @@ class MasyuGameGUI:
         else:
             current_cell.click_count = 1
 
-        # Cycle through line/connection types with each left click
-        click_type = current_cell.click_count % 5  # 0: Clear, 1: Vertical, 2: Horizontal, 3: Right angle 1, 4: Right angle 2
+        
+            # For other cells, cycle through options
+        click_type = current_cell.click_count % 5
 
+    
         # First, clear any existing line/connection for the current cell
         self.erase_line(current_cell)
-        # Then, based on the click count, draw the appropriate line/connection
+
+        # Draw the line/connection based on click type
         if click_type == 1:
             self.draw_vertical_line(current_cell, row, column)
+            
+            if self.check_for_cycle():
+                messagebox.showinfo("Cycle Detected", "A closed loop has been formed!")
+
         elif click_type == 2:
-            self.draw_horizontal_line(current_cell, row, column)
-        elif click_type == 3:
-            self.draw_right_angle_line_1(current_cell, row, column)
-        elif click_type == 4:
-            self.draw_right_angle_line_2(current_cell, row, column)
-        # If click_type is 0, the line/connection is already cleared by erase_line
+            self.draw_horizontal_line(current_cell, row, column)        
+            if self.check_for_cycle():
+                messagebox.showinfo("Cycle Detected", "A closed loop has been formed!")    
+        elif click_type == 3 or (current_cell.type == CellTypesEnum.BLACKPEARL and click_type in [1, 2]):
+        # Draw the right angle for black pearls or as per click count
+            self.draw_right_angle(current_cell, row, column, current_cell.click_count)
+            if self.check_for_cycle():
+                messagebox.showinfo("Cycle Detected", "A closed loop has been formed!")
+
+        # If click_type is 0, the line/connection has been cleared by erase_line
+
 
     def draw_vertical_line(self, cell, row, column):
         # Draw a vertical line through the current cell
@@ -106,37 +117,48 @@ class MasyuGameGUI:
             right_cell = self.game_board.matrix[row][column + 1]
             cell.add_connection(left_cell, right_cell)
 
-    def draw_right_angle_line_1(self, cell, row, column):
-    # Assuming this right angle turns down then right
-    # Clear any existing drawing on the cell
+
+    def draw_right_angle(self, cell, row, column, click_count):
+        # Calculate the angle orientation based on the click count
+        angle_orientation = click_count % 4  # There are four possible orientations for a right angle
+
+        # Clear any existing drawing on the cell
         self.erase_line(cell)
 
-        # Draw the right angle only if it doesn't go out of bounds
-        if row < len(self.game_board.matrix) - 1 and column < len(self.game_board.matrix[0]) - 1:
-            # Get the bottom and right cells for the connection
-            bottom_cell = self.game_board.matrix[row + 1][column]
-            right_cell = self.game_board.matrix[row][column + 1]
-            
-            # Add a connection between these cells
-            cell.add_connection(bottom_cell, right_cell)
+        # Define the cells to connect and lines to draw based on the orientation
+        if angle_orientation == 0:  # Right and down
+            connected_cells = (self.get_cell(row, column + 1), self.get_cell(row + 1, column))
+            self.canvas.create_line(column * 50 + 25, row * 50 + 25, (column + 1) * 50, row * 50 + 25, fill="black", width=2)  # Horizontal line
+            self.canvas.create_line(column * 50 + 25, row * 50 + 25, column * 50 + 25, (row + 1) * 50, fill="black", width=2)  # Vertical line
+        elif angle_orientation == 1:  # Down and left
+            connected_cells = (self.get_cell(row + 1, column), self.get_cell(row, column - 1))
+            self.canvas.create_line(column * 50, row * 50 + 25, column * 50 + 25, row * 50 + 25, fill="black", width=2)  # Horizontal line
+            self.canvas.create_line(column * 50 + 25, row * 50 + 25, column * 50 + 25, (row + 1) * 50, fill="black", width=2)  # Vertical line
+        elif angle_orientation == 2:  # Left and up
+            connected_cells = (self.get_cell(row, column - 1), self.get_cell(row - 1, column))
+            self.canvas.create_line(column * 50, row * 50 + 25, column * 50 + 25, row * 50 + 25, fill="black", width=2)  # Horizontal line
+            self.canvas.create_line(column * 50 + 25, row * 50, column * 50 + 25, row * 50 + 25, fill="black", width=2)  # Vertical line
+        elif angle_orientation == 3:  # Up and right
+            connected_cells = (self.get_cell(row - 1, column), self.get_cell(row, column + 1))
+            self.canvas.create_line(column * 50 + 25, row * 50 + 25, (column + 1) * 50, row * 50 + 25, fill="black", width=2)  # Horizontal line
+            self.canvas.create_line(column * 50 + 25, row * 50, column * 50 + 25, row * 50 + 25, fill="black", width=2)  # Vertical line
 
-            # Draw the lines representing the right angle
-            # First line: Current cell to the bottom cell
-            self.canvas.create_line(column * 50 + 25, row * 50 + 25, column * 50 + 25, (row + 1) * 50, fill="black", width=2)
-            # Second line: Bottom cell to the right cell (this line starts from the bottom cell center)
-            self.canvas.create_line(column * 50 + 25, (row + 1) * 50, (column + 1) * 50 + 25, (row + 1) * 50, fill="black", width=2)
+        # Remove any previous connections
+        while cell.connected_cells:
+            cell.connected_cells.pop()
+
+        # Add the new connections
+        if all(connected_cells):
+            cell.add_connection(*connected_cells)
 
 
+    def get_cell(self, row, column):
+        # Safely retrieve a cell object if within bounds
+        if 0 <= row < len(self.game_board.matrix) and 0 <= column < len(self.game_board.matrix[0]):
+            return self.game_board.matrix[row][column]
+        return None
 
-    def draw_right_angle_line_2(self, cell, row, column):
-    # This example assumes a right angle pointing up and right from the cell
-        if row > 0 and column < len(self.game_board.matrix[0]) - 1:
-            top_cell = self.game_board.matrix[row - 1][column]
-            right_cell = self.game_board.matrix[row][column + 1]
-            cell.add_connection(top_cell, right_cell)
-            # Draw the lines representing the right angle
-            self.canvas.create_line(column * 50 + 25, row * 50 + 25, column * 50 + 25, row * 50, fill="black", width=2)  # Up
-            self.canvas.create_line(column * 50 + 25, row * 50 + 25, (column + 1) * 50, row * 50 + 25, fill="black", width=2)  # Right
+
 
 
     def erase_line(self, cell):
@@ -158,4 +180,41 @@ class MasyuGameGUI:
     def limpiar_tablero(self):
         for id_linea, _ in self.lineas_dibujadas.values():
             self.canvas.delete(id_linea)
-        self.lineas_dibujadas.clear()
+        self.lineas_dibujadas.clear()   
+
+
+    def check_for_cycle(self):
+        visited = set()
+    
+        def dfs(cell, origin):
+            # If we've returned to the origin cell via different paths, it's a loop.
+            if cell in visited:
+                if origin in cell.connected_cells:
+                    return True
+                return False
+            visited.add(cell)
+
+            # Explore each connected cell.
+            for conn_cells in cell.connected_cells:
+                # Determine which cell is the next one to explore.
+                next_cell = conn_cells[0] if conn_cells[1] == cell else conn_cells[1]
+
+                # Skip backtracking to the cell we came from.
+                if origin is not None and next_cell == origin:
+                    continue
+
+                # Continue the DFS from the next cell.
+                if dfs(next_cell, cell if origin is None else origin):
+                    return True
+
+            return False
+
+        # Start the DFS from each cell that has connections
+        for row in self.game_board.matrix:
+            for cell in row:
+                visited.clear()  # Clear visited before each new DFS
+                if cell.connected_cells and dfs(cell, None):
+                    return True
+        return False
+
+
