@@ -1,6 +1,5 @@
 from FileHandling import file_handling
-from presentation import interfaz
-from presentation.game_board_printing import print_game_board
+from presentation.masyu_game_gui import MasyuGameGUI
 from .Game_Board import GameBoard
 from .cell_types_enum import CellTypesEnum
 
@@ -11,8 +10,9 @@ def initiateGame():
     
     if num_filas_columnas > 0:
         initial_board = createBoard(num_filas_columnas, configuraciones)
-        root = interfaz.crear_interfaz(initial_board)
-        root.mainloop()
+        gui = MasyuGameGUI(initial_board)
+        gui.print_game_board(initial_board)
+
     else:
         print("Error al leer el archivo de configuración. El tamaño indicado de la matriz es 0 o negativo.")
     

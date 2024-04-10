@@ -1,8 +1,10 @@
 # interfaz.py
 #para hacer esto me guie de este video y de los siguientes de la lista de repro https://www.youtube.com/watch?v=hTUJC8HsC2I
 from tkinter import *
+from tkinter import messagebox
 
-from Model.Game_Board import GameBoard  # Ensure correct import path based on your project structure
+
+from Model.Game_Board import GameBoard  
 from Model.cell_types_enum import CellTypesEnum
 
 def on_celda_click(event, canvas, lineas_dibujadas):
@@ -60,50 +62,10 @@ def dibujar_rotar_eliminar_curva(canvas, fila, columna, lineas_dibujadas):
     lineas_dibujadas[(fila, columna, 'curva')] = (ids_curva, estado_curva)
 
 
-def limpiar_tablero(canvas, lineas_dibujadas):
-    for id_linea, _ in lineas_dibujadas.values():
-        canvas.delete(id_linea)
-    lineas_dibujadas.clear()
 
 
-def crear_interfaz(game_board: GameBoard):
-    lineas_dibujadas = {}
 
-    raiz = Tk()
-    raiz.title("Masyu")
 
-    miFrame = Frame(raiz)
-    miFrame.pack(expand=True, fill="both", padx=20, pady=20)
-
-    botonesFrame = Frame(miFrame)
-    botonesFrame.pack(side=TOP, pady=10)
-
-    boton_limpiar = Button(botonesFrame, text="Limpiar Tablero", command=lambda: limpiar_tablero(canvas, lineas_dibujadas))
-    boton_limpiar.pack(side=LEFT, padx=5)
-
-    boton_jugador_sintetico = Button(botonesFrame, text="Jugador Sintético")  # Implement its functionality as needed
-    boton_jugador_sintetico.pack(side=LEFT, padx=5)
-
-    textoLabel = Label(miFrame, text="Masyu!", fg="red", font=("System", 18))
-    textoLabel.pack(side=TOP, pady=(0, 20))
-
-    num_filas_columnas = len(game_board.matrix)
-    canvas = Canvas(miFrame, width=50*num_filas_columnas, height=50*num_filas_columnas, bg="white")
-    canvas.pack()
-
-    canvas.bind("<Button-1>", lambda event: on_celda_click(event, canvas, lineas_dibujadas))
-    canvas.bind("<Button-3>", lambda event: on_celda_click(event, canvas, lineas_dibujadas))
-
-    # Draw the grid and pearls based on the GameBoard state
-    for i, row in enumerate(game_board.matrix):
-        for j, cell in enumerate(row):
-            canvas.create_rectangle(50 * j, 50 * i, 50 * (j + 1), 50 * (i + 1), outline="grey")
-            if cell.type == CellTypesEnum.WHITEPEARL:
-                canvas.create_oval(50 * j + 10, 50 * i + 10, 50 * (j + 1) - 10, 50 * (i + 1) - 10, fill="white", outline="black")
-            elif cell.type == CellTypesEnum.BLACKPEARL:
-                canvas.create_oval(50 * j + 10, 50 * i + 10, 50 * (j + 1) - 10, 50 * (i + 1) - 10, fill="black")
-            
-    return raiz
 
 
 # Ejemplo de cómo podrías usar `crear_interfaz`
