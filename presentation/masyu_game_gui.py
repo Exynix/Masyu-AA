@@ -107,40 +107,53 @@ class MasyuGameGUI:
             cell.add_connection(left_cell, right_cell)
 
     def draw_right_angle_line_1(self, cell, row, column):
-        # Placeholder for drawing the first right angle; adjust as needed based on your requirements
-        # This example assumes a right angle pointing down and right from the cell
+    # Assuming this right angle turns down then right
+    # Clear any existing drawing on the cell
+        self.erase_line(cell)
+
+        # Draw the right angle only if it doesn't go out of bounds
         if row < len(self.game_board.matrix) - 1 and column < len(self.game_board.matrix[0]) - 1:
+            # Get the bottom and right cells for the connection
             bottom_cell = self.game_board.matrix[row + 1][column]
             right_cell = self.game_board.matrix[row][column + 1]
+            
+            # Add a connection between these cells
             cell.add_connection(bottom_cell, right_cell)
+
             # Draw the lines representing the right angle
-            self.canvas.create_line(column * 50 + 25, row * 50, column * 50 + 25, (row + 1) * 50, fill="black", width=2)  # Down
-            self.canvas.create_line(column * 50, row * 50 + 25, (column + 1) * 50, row * 50 + 25, fill="black", width=2)  # Right
+            # First line: Current cell to the bottom cell
+            self.canvas.create_line(column * 50 + 25, row * 50 + 25, column * 50 + 25, (row + 1) * 50, fill="black", width=2)
+            # Second line: Bottom cell to the right cell (this line starts from the bottom cell center)
+            self.canvas.create_line(column * 50 + 25, (row + 1) * 50, (column + 1) * 50 + 25, (row + 1) * 50, fill="black", width=2)
+
+
 
     def draw_right_angle_line_2(self, cell, row, column):
-        # Placeholder for drawing the second right angle; adjust as needed
-        # This example assumes a right angle pointing down and left from the cell
-        if row < len(self.game_board.matrix) - 1 and column > 0:
-            bottom_cell = self.game_board.matrix[row + 1][column]
-            left_cell = self.game_board.matrix[row][column - 1]
-            cell.add_connection(bottom_cell, left_cell)
+    # This example assumes a right angle pointing up and right from the cell
+        if row > 0 and column < len(self.game_board.matrix[0]) - 1:
+            top_cell = self.game_board.matrix[row - 1][column]
+            right_cell = self.game_board.matrix[row][column + 1]
+            cell.add_connection(top_cell, right_cell)
             # Draw the lines representing the right angle
-            self.canvas.create_line(column * 50 + 25, row * 50, column * 50 + 25, (row + 1) * 50, fill="black", width=2)  # Down
-            self.canvas.create_line(column * 50, row * 50 + 25, column * 50 - 25, row * 50 + 25, fill="black", width=2)  # Left
+            self.canvas.create_line(column * 50 + 25, row * 50 + 25, column * 50 + 25, row * 50, fill="black", width=2)  # Up
+            self.canvas.create_line(column * 50 + 25, row * 50 + 25, (column + 1) * 50, row * 50 + 25, fill="black", width=2)  # Right
+
 
     def erase_line(self, cell):
-        # Simply erase the entire cell to remove any line visually
+        # Clear any visual line from the cell
         row, column = cell.row, cell.column
+        # Recreate the rectangle to "erase" any line
         self.canvas.create_rectangle(column * 50, row * 50, (column + 1) * 50, (row + 1) * 50, fill="white", outline="grey")
-        # Redraw the pearl if it exists
+        # Redraw the pearl if present
         if cell.type == CellTypesEnum.WHITEPEARL:
             self.canvas.create_oval(column * 50 + 10, row * 50 + 10, (column + 1) * 50 - 10, (row + 1) * 50 - 10, fill="white", outline="black")
         elif cell.type == CellTypesEnum.BLACKPEARL:
             self.canvas.create_oval(column * 50 + 10, row * 50 + 10, (column + 1) * 50 - 10, (row + 1) * 50 - 10, fill="black")
-        # Remove the last connection
-        if cell.connected_cells:
-            cell.remove_connection(*cell.connected_cells[-1])
-            cell.connected_cells.pop()
+        # Remove all existing connections
+        while cell.connected_cells:
+            conn = cell.connected_cells.pop()
+            cell.remove_connection(*conn)
+
 
     def limpiar_tablero(self):
         for id_linea, _ in self.lineas_dibujadas.values():
