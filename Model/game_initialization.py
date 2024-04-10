@@ -8,13 +8,13 @@ from .cell_types_enum import CellTypesEnum
 def initiateGame():
     nombre_archivo = input("Ingrese el nombre del archivo con el que desea jugar (incluya el .txt en el nombre): ")
     num_filas_columnas, configuraciones = file_handling.leer_archivo(nombre_archivo)
-    createBoard(num_filas_columnas, configuraciones)
     
     if num_filas_columnas > 0:
-        app = interfaz.crear_interfaz(num_filas_columnas, configuraciones)
-        app.mainloop()
+        initial_board = createBoard(num_filas_columnas, configuraciones)
+        print_game_board(initial_board)
     else:
         print("Error al leer el archivo de configuración. El tamaño indicado de la matriz es 0 o negativo.")
+    
 
 # --------------------------------------------------------------- 
 """
@@ -37,7 +37,7 @@ def createBoard(matrix_size: int, file_configurations: list):
         elif pearl_type == 2:
             game_board.matrix[row-1][column-1].change_type(CellTypesEnum.BLACKPEARL)
 
-    print_game_board(game_board)
+    return game_board
 
 
 
