@@ -39,9 +39,4 @@ def createBoard(matrix_size: int, file_configurations: list):
         elif pearl_type == 2:
             game_board.matrix[row-1][column-1].change_type(CellTypesEnum.BLACKPEARL)
 
-    return game_board
-
-
-
-
-    
+    return game_board    
