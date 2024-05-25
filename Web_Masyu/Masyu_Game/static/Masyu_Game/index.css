@@ -1,0 +1,53 @@
+.main-header{
+    text-align: center;
+
+    font-size: xxx-large;
+
+    height: 15%;
+
+}
+
+/* -------------- Sections of the page -------------- */
+.playing-buttons-section{
+    width: 100%;
+    height: 10%;
+
+}
+
+.input-modes-visualizer-section{
+
+    width: 15%;
+    height: 75%;
+}
+
+.game-board-section{
+    width: 70%;
+    height: 75%;
+
+}
+
+.rules-section{
+
+    width: 15%;
+    height: 75%;
+}
+
+/* -------------- Sections of the page -------------- */
+
+
+/* -------------- Fonts -------------- */
+.pixelify-sans-font {
+  font-family: "Pixelify Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* -------------- Color -------------- */
+.fuchsia-background{
+    background: deeppink;
+}
+
+.white-font{
+    color: white;
+}
