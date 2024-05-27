@@ -21,6 +21,7 @@ def game_board_view(request, board_id):
     board = [[None for _ in size_range] for _ in size_range]
 
     for circle in game_board.circles.all():
+        print(f"Circle at ({circle.x}, {circle.y}) is {circle.color}")
         board[circle.y - 1][circle.x - 1] = circle.color.lower()
 
     return render(request, 'Masyu_Game/game_board.html', {'game_board': game_board, 'size_range': size_range, 'board': board})

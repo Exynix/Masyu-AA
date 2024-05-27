@@ -35,4 +35,6 @@ class GameBoard(models.Model):
                 color = Circle.WHITE if circle_type == 1 else Circle.BLACK
                 circle = Circle.objects.create(x=row, y=col, color=color)
                 game_board.circles.add(circle)
+                print(f"Added {color} circle at ({row}, {col})")
             return game_board
+

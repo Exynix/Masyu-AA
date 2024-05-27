@@ -51,3 +51,48 @@
 .white-font{
     color: white;
 }
+
+/* Masyu_Game/static/Masyu_Game/styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+#game-board {
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.circle-b {
+    background-color: black;
+    border-radius: 50%;
+    margin: 2px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.circle-w {
+    background-color: white;
+    border: solid black 2px;
+    border-radius: 50%;
+    margin: 2px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.cell {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    border: 1px solid #000;
+    margin: 2px;
+}
+
+.row {
+    display: flex;
+}
