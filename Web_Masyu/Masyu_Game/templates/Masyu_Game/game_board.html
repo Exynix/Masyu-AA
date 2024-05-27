@@ -4,17 +4,55 @@
     <title>Masyu Game</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'Masyu_Game/styles.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <h1>Masyu Game</h1>
     <div id="game-board">
-        {% for row in board %}
+        {% for y in size_range %}
             <div class="row">
-                {% for cell in row %}
-                    <div class="cell {% if cell %}circle-{{ cell }}{% endif %}"></div>
+                {% for x in size_range %}
+                    <div class="cell" data-x="{{ x }}" data-y="{{ y }}">
+                        {% if board.y_x %}
+                            <div class="circle-{{ board.y_x }}"></div>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             </div>
         {% endfor %}
     </div>
+    <script>
+        let selectedCell = null;
+
+        $('.cell').click(function() {
+            if (selectedCell === null) {
+                selectedCell = $(this);
+                $(this).css('background-color', 'lightblue');
+            } else {
+                const x1 = selectedCell.data('x');
+                const y1 = selectedCell.data('y');
+                const x2 = $(this).data('x');
+                const y2 = $(this).data('y');
+
+                $.post("{% url 'add_line' %}", {
+                    'x1': x1,
+                    'y1': y1,
+                    'x2': x2,
+                    'y2': y2,
+                    'board_id': {{ game_board.id }},
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                }, function(data) {
+                    if (data.status === 'success') {
+                        location.reload();
+                    } else {
+                        alert('Failed to add line');
+                    }
+                });
+
+                selectedCell.css('background-color', '');
+                selectedCell = null;
+            }
+        });
+    </script>
 </body>
 </html>

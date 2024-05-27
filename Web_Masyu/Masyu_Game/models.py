@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
 class Circle(models.Model):
     BLACK = 'B'
     WHITE = 'W'
@@ -17,9 +17,20 @@ class Circle(models.Model):
         return f"{self.get_color_display()} Circle at ({self.x}, {self.y})"
 
 
+class Line(models.Model):
+    x1 = models.IntegerField()
+    y1 = models.IntegerField()
+    x2 = models.IntegerField()
+    y2 = models.IntegerField()
+
+    def __str__(self):
+        return f"Line from ({self.x1}, {self.y1}) to ({self.x2}, {self.y2})"
+
+
 class GameBoard(models.Model):
     size = models.IntegerField()
     circles = models.ManyToManyField(Circle)
+    lines = models.ManyToManyField(Line, blank=True)
 
     def __str__(self):
         return f"GameBoard {self.id} ({self.size}x{self.size})"
@@ -37,4 +48,3 @@ class GameBoard(models.Model):
                 game_board.circles.add(circle)
                 print(f"Added {color} circle at ({row}, {col})")
             return game_board
-
