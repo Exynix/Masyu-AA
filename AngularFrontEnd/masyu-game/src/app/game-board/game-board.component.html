@@ -1,8 +1,27 @@
-<div *ngIf="gameBoard" class="board-container">
-  <h1>Masyu Game Board</h1>
-  <div *ngFor="let y of [].constructor(gameBoard.size); let yi = index" class="row">
-    <div class="cell" *ngFor="let x of [].constructor(gameBoard.size); let xi = index">
-      <div [ngClass]="getCircleClass(xi + 1, yi + 1)"></div>
+<div *ngIf="gameBoard" class="board-page">
+  <h1 class="title">Masyu Game</h1>
+  <div class="content">
+    <div class="column first-column">
+      <!-- Future content for the first column -->
+    </div>
+    <div class="column main-column">
+      <div class="board-container">
+        <div *ngFor="let y of [].constructor(gameBoard.size); let yi = index" class="row">
+          <div class="cell" *ngFor="let x of [].constructor(gameBoard.size); let xi = index">
+            <div [ngClass]="getCircleClass(xi + 1, yi + 1)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column third-column">
+      <div class="rules">
+        <h2>Game Rules</h2>
+        <p>
+          1. El bucle debe ser único, continuo y sin intersección.<br>
+          2. El bucle debe atravesar las perlas blancas y realizar un giro de 90 grados en al menos una celda adyacente.<br>
+          3. El bucle debe girar sobre las perlas negras y pasar directamente por las celdas antes y después de la perla negra.
+        </p>
+      </div>
     </div>
   </div>
 </div>
