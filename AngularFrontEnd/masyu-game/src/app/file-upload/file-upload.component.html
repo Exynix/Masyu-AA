@@ -1,0 +1,5 @@
+<div class="file-upload">
+  <h2>Upload Masyu Board File</h2>
+  <input type="file" (change)="onFileSelected($event)">
+  <button (click)="onUpload()" [disabled]="!selectedFile">Upload</button>
+</div>

@@ -1,0 +1,8 @@
+<div *ngIf="gameBoard" class="board-container">
+  <h1>Masyu Game Board</h1>
+  <div *ngFor="let y of [].constructor(gameBoard.size); let yi = index" class="row">
+    <div class="cell" *ngFor="let x of [].constructor(gameBoard.size); let xi = index">
+      <div [ngClass]="getCircleClass(xi + 1, yi + 1)"></div>
+    </div>
+  </div>
+</div>

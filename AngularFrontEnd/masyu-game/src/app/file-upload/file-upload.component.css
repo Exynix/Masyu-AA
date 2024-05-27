@@ -1,0 +1,36 @@
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+  padding: 20px;
+  border: 2px dashed #007bff;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.file-upload h2 {
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+.file-upload input {
+  margin-bottom: 20px;
+}
+
+.file-upload button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.file-upload button:disabled {
+  background-color: #cccccc;
+}
+
+.file-upload button:not(:disabled):hover {
+  background-color: #0056b3;
+}
