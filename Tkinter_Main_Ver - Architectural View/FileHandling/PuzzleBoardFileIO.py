@@ -1,5 +1,5 @@
 from PuzzleBoard import *
-from MasyuExceptions import *
+from GeneralExceptions import *
 
 # Clase con funcionalidad para guardar un tablero "PuzzleBoard" en un archivo.
 # Y para crear un tablero "PuzzleBoard" a partir de un archivo.

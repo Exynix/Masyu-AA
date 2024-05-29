@@ -1,11 +1,10 @@
-from GetPuzzleBoardSizeDialog import *
-from Solver import *
-from FileIO import *
-from ErrorDialog import *
-from WorkingWindow import *
-from NoSolutionDialog import *
-from BruteForceSolve import *
-from DetermineCellsToDisableWorkThread import *
+from WindowPuzzleBoardSize import *
+from SyntheticPlayer import *
+from HandlingFileIO import *
+from WindowError import *
+from WindowNoSolution import *
+from AlgorithmsBruteForce import *
+from ElectionDisabledCells import *
 
 import os.path
 import sys
@@ -273,10 +272,10 @@ class SolverUIWindow():
 
         determineCellsToDisable = DetermineCellsToDisableWorkThread(self.solver, self.puzzleBoardObject, selectedItem)
 
-        workingWindow = WorkingWindow(self.mainWindow, determineCellsToDisable)
+        # workingWindow = WorkingWindow(self.mainWindow, determineCellsToDisable)
 
         determineCellsToDisable.start()
-        workingWindow.showWindow()
+        # workingWindow.showWindow()
 
     # Llamado a métodos de fuerza bruta para solucionar los caminos que aún estan abiertos.
     def __tryBruteForceSolvingInThread(self):
@@ -284,10 +283,10 @@ class SolverUIWindow():
 
         self.__bruteForceSolver = BruteForceSolveWorkThread(self.solver, self.puzzleBoardObject)
 
-        self.__workingWindow = WorkingWindow(self.mainWindow, self.__bruteForceSolver)
+        # self.__workingWindow = WorkingWindow(self.mainWindow, self.__bruteForceSolver)
 
         self.__bruteForceSolver.start()
-        self.__workingWindow.showWindow()
+        # self.__workingWindow.showWindow()
 
         bruteForceResult = self.__bruteForceSolver.getBruteForceResults()
         if (bruteForceResult != None):

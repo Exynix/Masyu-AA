@@ -1,4 +1,4 @@
-from Pathway_Line import *
+from LinePaths import *
 from BoardCell import *
 
 class PuzzleBoard():
