@@ -4,7 +4,7 @@ from FileIO import *
 from ErrorDialog import *
 from WorkingWindow import *
 from NoSolutionDialog import *
-from BruteForceSolveWorkThread import *
+from BruteForceSolve import *
 from DetermineCellsToDisableWorkThread import *
 
 import os.path

@@ -1,6 +1,7 @@
 import threading
 import abc
 
+
 class WorkThread():
 
     @abc.abstractmethod

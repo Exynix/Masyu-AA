@@ -7,7 +7,7 @@ class PuzzleBoardFile():
     __WHITE_CIRCLE = 'W'
     __DOT = 'D'
 
-    FILE_EXTENSION = 'pbd'
+    FILE_EXTENSION = 'txt'
 
     @classmethod
 

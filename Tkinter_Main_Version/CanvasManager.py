@@ -1,5 +1,6 @@
 import re
 
+# Clase encargada de manejar todos los aspectos visuales del canvas actual.
 class CanvasManager():
 
     ITEM_WIDTH = 30
@@ -52,14 +53,17 @@ class CanvasManager():
         self.showBlockedPaths = showBlockedPaths
         self.showDisabledCells = showDisabledCells
 
+    # Toggle de si mostrar la solución actual o no.
     def setShowProgress(self, isEnabled):
         self.showProgress = isEnabled
         self.__refreshCanvas()
 
+    # Toggle de si mostar los caminos bloqueados.
     def setShowBlockedPaths(self, isEnabled):
         self.showBlockedPaths = isEnabled
         self.__refreshCanvas()
 
+    # Toggle de si mostrar las celdas deshabilitadas.
     def setShowDisabledCells(self, isEnabled):
         self.showDisabledCells = isEnabled
         self.__refreshCanvas()
@@ -67,6 +71,7 @@ class CanvasManager():
     def registerCellSelectionCallback(self, callback):
         self.cellSelectionCallback = callback
 
+    #
     def registerPuzzleBoard(self, puzzleBoard):
         self.puzzleBoard = puzzleBoard
 
@@ -116,6 +121,18 @@ class CanvasManager():
                                                               width=self.CELL_LINE_WIDTH,
                                                               tags=tags, state='normal')
 
+                    bottomLineTag = itemTagBase + self.CELL_BOTTOM_LINE_TAG
+                    allCellLinesTag = itemTagBase + self.CELL_ALL_LINES_TAG
+                    allCellPathwaysTag = itemTagBase + self.CELL_ALL_PATHWAYS_TAG
+                    allLinesTag = self.ALL_LINES_TAG
+                    allPathwaysTag = self.ALL_PATHWAYS_TAG
+                    bottomCellTopLineTag = self.__createBaseItemTag(row + 1, col) + self.CELL_TOP_LINE_TAG
+                    tags = (itemTagBase, allLinesTag, allPathwaysTag, bottomLineTag, allCellLinesTag,
+                            allCellPathwaysTag, bottomCellTopLineTag)
+                    item = self.puzzleBoardCanvas.create_line(middleX, middleY, middleX, y2,
+                                                              width=self.CELL_LINE_WIDTH,
+                                                              tags=tags, state='normal')
+
                     rightLineTag = itemTagBase + self.CELL_RIGHT_LINE_TAG
                     allCellLinesTag = itemTagBase + self.CELL_ALL_LINES_TAG
                     allCellPathwaysTag = itemTagBase + self.CELL_ALL_PATHWAYS_TAG
@@ -127,6 +144,7 @@ class CanvasManager():
                     item = self.puzzleBoardCanvas.create_line(middleX, middleY, x2, middleY,
                                                               width=self.CELL_LINE_WIDTH,
                                                               tags=tags, state='normal')
+
 
                     topLineTag = itemTagBase + self.CELL_TOP_LINE_TAG
                     allCellLinesTag = itemTagBase + self.CELL_ALL_LINES_TAG
@@ -140,17 +158,6 @@ class CanvasManager():
                                                               width=self.CELL_LINE_WIDTH,
                                                               tags=tags, state='normal')
 
-                    bottomLineTag = itemTagBase + self.CELL_BOTTOM_LINE_TAG
-                    allCellLinesTag = itemTagBase + self.CELL_ALL_LINES_TAG
-                    allCellPathwaysTag = itemTagBase + self.CELL_ALL_PATHWAYS_TAG
-                    allLinesTag = self.ALL_LINES_TAG
-                    allPathwaysTag = self.ALL_PATHWAYS_TAG
-                    bottomCellTopLineTag = self.__createBaseItemTag(row + 1, col) + self.CELL_TOP_LINE_TAG
-                    tags = (itemTagBase, allLinesTag, allPathwaysTag, bottomLineTag, allCellLinesTag,
-                            allCellPathwaysTag, bottomCellTopLineTag)
-                    item = self.puzzleBoardCanvas.create_line(middleX, middleY, middleX, y2,
-                                                              width=self.CELL_LINE_WIDTH,
-                                                              tags=tags, state='normal')
 
                     leftBlockTag = itemTagBase + self.CELL_LEFT_BLOCK_TAG
                     allCellBlocksTag = itemTagBase + self.CELL_ALL_BLOCKS_TAG
@@ -438,6 +445,7 @@ class CanvasManager():
         rowNum, colNum = firstMatch
         return(int(rowNum), int(colNum))
 
+    # ------------ Metodos para dibujar lineas ------------
     def __drawLineRight(self, rowNum, colNum):
         baseTag = self.__createBaseItemTag(rowNum, colNum)
         rightLineTag = baseTag + self.CELL_RIGHT_LINE_TAG
@@ -458,6 +466,7 @@ class CanvasManager():
         bottomLineTag = baseTag + self.CELL_BOTTOM_LINE_TAG
         self.puzzleBoardCanvas.itemconfigure(bottomLineTag, state='normal')
 
+    # ------------ Metodos para mostrar el bloqueo de celdas. ------------
     def __blockRight(self, rowNum, colNum):
         baseTag = self.__createBaseItemTag(rowNum, colNum)
         rightBlockTag = baseTag + self.CELL_RIGHT_BLOCK_TAG

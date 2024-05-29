@@ -1,5 +1,7 @@
 import configparser
 import os
+
+# Manejador de confifuraciones de la aplicación.
 class ConfigMgr():
 
     __configFileName = None
@@ -7,6 +9,7 @@ class ConfigMgr():
     __fullPath = None
     __configParser = None
 
+    # Esta función carga la configuración desde un archivo. Toma el directorio y el nombre del archivo como parámetros.
     @classmethod
     def loadSettings(cls, directory, fileName):
 
@@ -20,6 +23,7 @@ class ConfigMgr():
 
     @classmethod
 
+    # Esta función establece el valor de una configuración específica en una sección específica del archivo de configuración.
     def setSettingValue(cls, section, name, value):
 
         if not(cls.__configParser.has_section(section)):
@@ -34,6 +38,7 @@ class ConfigMgr():
         with open(cls.__fullPath, 'w') as f:
             cls.__configParser.write(f)
 
+    #  Esta función recupera el valor de una configuración específica de una sección específica del archivo de configuración.
     @classmethod
     def getSettingValue(cls, section, name):
         try:

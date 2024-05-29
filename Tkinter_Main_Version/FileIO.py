@@ -1,6 +1,6 @@
 from tkinter import filedialog as fd
 from PuzzleStateMachine import *
-from ConfigMgr import *
+from ConfigManager import *
 from PuzzleBoardFile import *
 from UnsavedChangesDialog import *
 

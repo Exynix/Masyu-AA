@@ -1,3 +1,4 @@
+# Clases utilitarias sobre el tablero.
 class Utilities():
 
     @classmethod
