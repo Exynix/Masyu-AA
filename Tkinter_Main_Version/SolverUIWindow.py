@@ -13,13 +13,15 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 class SolverUIWindow():
 
-    STATE_1 = 1     
-    STATE_2 = 2     
-    STATE_3 = 3     
-    STATE_4 = 4     
-    STATE_5 = 5     
-    STATE_6 = 6     
+    # Estados de los archivos.
+    STATE_1 = 1     # Sin  cambios, y nunca se guardo un archivo.
+    STATE_2 = 2     # Cambiado y nunca se guardo un archivo.
+    STATE_3 = 3     # Sin cambios desde la ultima apertura de archivo.
+    STATE_4 = 4     # Cambiado desde la ultima apertura de archivo.
+    STATE_5 = 5     # Sin cambios desde la ultima guardada.
+    STATE_6 = 6     # Cambiado desde la ultima guardada.
 
+    # Constantes para la creación y estética de elementos gráficos.
     NUM_ITEMS = 3                   
     ITEM_PADDING = 3                
     ITEM_HIGHLIGHT_THICKNESS = 2    
@@ -38,9 +40,6 @@ class SolverUIWindow():
     RIGHT = 1
     UP = 2
     DOWN =3
-
-    def __donothing(self):
-        print("do nothing")
 
     def __fileOpenHandler(self):
 
@@ -279,6 +278,7 @@ class SolverUIWindow():
         determineCellsToDisable.start()
         workingWindow.showWindow()
 
+    # Llamado a métodos de fuerza bruta para solucionar los caminos que aún estan abiertos.
     def __tryBruteForceSolvingInThread(self):
         self.bruteForceBtn['state'] = tk.DISABLED
 

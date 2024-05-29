@@ -1,12 +1,14 @@
 from PuzzleBoard import *
 from MasyuExceptions import *
 
+# Clase con fujnc
 class PuzzleBoardFile():
     # Class variables
     __BLACK_CIRCLE = 'B'
     __WHITE_CIRCLE = 'W'
     __DOT = 'D'
 
+    # Extension de los archivos que serán guardados y abiertos. Puede cambiar.
     FILE_EXTENSION = 'txt'
 
     @classmethod

@@ -1,7 +1,7 @@
 from tkinter import filedialog as fd
 from PuzzleStateMachine import *
 from ConfigManager import *
-from PuzzleBoardFile import *
+from PuzzleBoardFileIO import *
 from UnsavedChangesDialog import *
 
 import os.path
