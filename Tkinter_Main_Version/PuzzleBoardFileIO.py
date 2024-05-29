@@ -1,9 +1,10 @@
 from PuzzleBoard import *
 from MasyuExceptions import *
 
-# Clase con fujnc
+# Clase con funcionalidad para guardar un tablero "PuzzleBoard" en un archivo.
+# Y para crear un tablero "PuzzleBoard" a partir de un archivo.
 class PuzzleBoardFile():
-    # Class variables
+
     __BLACK_CIRCLE = 'B'
     __WHITE_CIRCLE = 'W'
     __DOT = 'D'
@@ -12,7 +13,6 @@ class PuzzleBoardFile():
     FILE_EXTENSION = 'txt'
 
     @classmethod
-
     def saveToFile(cls, filePath, puzzleBoard):
         puzzleBoardFileData = []
 

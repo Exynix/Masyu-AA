@@ -1,5 +1,5 @@
 from WorkThread import *
-from Cell import *
+from BoardCell import *
 from MasyuExceptions import *
 
 class DetermineCellsToDisableWorkThread(WorkThread):

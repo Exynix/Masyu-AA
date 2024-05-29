@@ -76,29 +76,3 @@ class GetPuzzleBoardSizeDialog(MasyuDialog):
         super().showDialog(self.__dialogWindow)
 
         return((self.numRows, self.numCols))
-
-if __name__ == "__main__":
-    currentRowValue = -1
-    currentColValue = -1
-
-    def showResizeDialog():
-        global currentRowValue
-        global currentColValue
-        resizeResults = GetPuzzleBoardSizeDialog()
-        rowVal, colVal = resizeResults.showDialog(currentRowValue, currentColValue)
-        print("Dialog return value =", rowVal, "x", colVal)
-
-        if ((rowVal != -1) and (colVal != -1)):
-            currentRowValue = rowVal
-            currentColValue = colVal
-
-    mainWindow = tk.Tk()
-    mainWindow.title("Modal Dialog test")
-
-    testButtonsFrame = tk.Frame(master=mainWindow)
-    testButtonsFrame.pack(expand=True, fill=tk.BOTH, padx=20)
-
-    resizeDialogButton = tk.Button(master=testButtonsFrame, text="Show Resize Dialog", command=showResizeDialog)
-    resizeDialogButton.pack(side=tk.TOP, pady=5)
-
-    mainWindow.mainloop()

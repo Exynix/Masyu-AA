@@ -1,5 +1,5 @@
 from Pathway_Line import *
-from Cell import *
+from BoardCell import *
 
 class PuzzleBoard():
     STATE_UNSOLVED = 0

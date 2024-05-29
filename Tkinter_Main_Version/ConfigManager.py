@@ -1,7 +1,7 @@
 import configparser
 import os
 
-# Manejador de confifuraciones de la aplicación.
+# Manejador de confifuraciones del juego.
 class ConfigMgr():
 
     __configFileName = None

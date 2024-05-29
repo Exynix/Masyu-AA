@@ -9,7 +9,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), ''))
 
 class FileIO():
-    # Class variables
+
     __MODE_NEW = 1
     __MODE_OPEN = 2
     __MODE_SAVE = 3
