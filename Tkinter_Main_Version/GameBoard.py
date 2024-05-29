@@ -1,11 +1,15 @@
 from LinePaths import *
 from BoardCell import *
 
+# Clase que representa el tablero de juego.
+# Está conformada por una grilla de BoardCells y Lineas, o pathways.
 class PuzzleBoard():
+    # Constantes para Estado del tablero.
     STATE_UNSOLVED = 0
     STATE_SOLVED = 1
     STATE_INVALID = -1
 
+    # Constantes para los tamaños permitidos de tablero
     MIN_NUM_ROWS = 5
     MIN_NUM_COLS = 5
     MAX_NUM_ROWS = 15
@@ -14,6 +18,9 @@ class PuzzleBoard():
     __DEFAULT_NUM_ROWS = 10
     __DEFAULT_NUM_COLS = 10
 
+    # Constructor. Puede ser parametrizado con:
+    # El tamaño del tablero (tupla).
+    # Información sobre el tablero (tupla de definición del tablero, y su solución).
     def __init__(self, size = None, puzzleData = None):
         self.state = PuzzleBoard.STATE_UNSOLVED
 

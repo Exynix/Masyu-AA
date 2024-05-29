@@ -3,8 +3,10 @@ from WindowProgress import *
 from BoardUtilities import *
 import time
 
+# Implementaciones de métodos de fuerzaw bruta para dedicir los siguientes movimientos.
 class BruteForceSolveWorkThread(WorkThread):
 
+    # Define la dirección de la linea que será dibujada.
     LEFT = 0
     RIGHT = 1
     UP = 2
@@ -16,6 +18,8 @@ class BruteForceSolveWorkThread(WorkThread):
         self.__bruteForceResults = None
         self.__wasCancelledByUser = False
 
+    # Busca el primer circulo negro que tenga una SOLA LINEA. Luego se determina en que dirección
+    # se debería intentar dibujar la linea.
     def __findBlackCircleWithOneLine(self, pb):
         numRows, numCols = pb.getDimensions()
         for rowNum in range (0, numRows):
@@ -186,6 +190,7 @@ class BruteForceSolveWorkThread(WorkThread):
     def wasRequestCancelledByUser(self):
         return(self.__wasCancelledByUser)
 
+
     def codeToRunInThread(self):
 
         pbClone = self.pb.cloneAll()
@@ -233,15 +238,11 @@ class BruteForceSolveWorkThread(WorkThread):
             else:
 
                 if (Utilities.checkIfPuzzleIsSolved(pbClone)):
-
                     self.__bruteForceResults = pbClone
                     return
-
                 nextGuess = self.__findNextGuess(pbClone)
                 rowNum, colNum, direction = nextGuess
-
             finally:
-
                 while ((rowNum == -1) and (colNum == -1)):
                     if (len(guessStack) <= 0):
 
@@ -258,17 +259,7 @@ class BruteForceSolveWorkThread(WorkThread):
                     nextGuess = self.__findNextDirection(pbClone, lastGuess)
                     rowNum, colNum, direction = nextGuess
 
+    # Retorna nada o "None" si no se encontro una solución.
+    # Alternativamente, retorna un tablero con la solución.
     def getBruteForceResults(self):
         return(self.__bruteForceResults)
-
-    def supportsCancelRequest(self):
-        return(True)
-
-    def timerHandler(self, parentWindow):
-        if (self.showResultsEvent.isSet()):
-            self.showResultsEvent.clear()
-            self.__progressDialog = ProgressDialog(parentWindow, self.__bruteForceResults, self.cancelEvent, self.resumeEvent)
-            self.__progressDialog.showDialog()
-            return (True)
-
-        return(False)

@@ -1,4 +1,4 @@
-from PuzzleBoard import *
+from GameBoard import *
 from GeneralExceptions import *
 
 # Clase con funcionalidad para guardar un tablero "PuzzleBoard" en un archivo.

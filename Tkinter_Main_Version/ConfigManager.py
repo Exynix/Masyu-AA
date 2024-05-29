@@ -9,7 +9,7 @@ class ConfigMgr():
     __fullPath = None
     __configParser = None
 
-    # Esta función carga la configuración desde un archivo. Toma el directorio y el nombre del archivo como parámetros.
+    # Carga la configuración desde un archivo. Toma el directorio y el nombre del archivo como parámetros.
     @classmethod
     def loadSettings(cls, directory, fileName):
 
@@ -23,7 +23,7 @@ class ConfigMgr():
 
     @classmethod
 
-    # Esta función establece el valor de una configuración específica en una sección específica del archivo de configuración.
+    # Establece el valor de una configuración específica en una sección específica del archivo de configuración.
     def setSettingValue(cls, section, name, value):
 
         if not(cls.__configParser.has_section(section)):

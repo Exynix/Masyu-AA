@@ -1,13 +1,15 @@
 from tkinter import filedialog as fd
 from ModificationPuzzleStateMachine import *
 from ConfigManager import *
-from PuzzleBoardFileIO import *
+from GameBoardFileIO import *
 from WindowUnsavedChanges import *
 
 import os.path
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), ''))
 
+# Clase encargada de las operoaciones de IO.
+# Guardado de archivos, apertura de archivos, etc.
 class FileIO():
 
     __MODE_NEW = 1

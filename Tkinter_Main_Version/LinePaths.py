@@ -3,7 +3,7 @@
 
 # Linea: Representa una conexión entre 2 celdas.
 # Bloqueado: Camino o conexión bloqueda. Determinada por las reglas de juego.
-# Abierto: Aun no se
+# Abierto: Aun no se determina si la linea debería estar bloqueada, o si debería ser una linea.
 
 class Pathway():
     TYPE_OPEN = 0

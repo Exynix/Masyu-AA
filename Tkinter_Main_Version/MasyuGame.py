@@ -366,6 +366,7 @@ class SolverUIWindow():
         self.numRows = 0
         self.numCols = 0
 
+
         frame1Color = "light grey"
         self.itemCanvasColor = "grey"
         frame2Color = "light grey"
@@ -379,7 +380,8 @@ class SolverUIWindow():
         self.selectedItem = None
 
         self.mainWindow = tk.Tk()
-        self.__setWindowTitle(None)
+        self.__setWindowTitle("Masyu Automatic player!")
+        self.mainWindow.geometry("800x600")
 
         self.mainWindow.protocol("WM_DELETE_WINDOW", self.__fileExitMenuHandler)
 
@@ -412,7 +414,7 @@ class SolverUIWindow():
 
         self.smartPlacementModeVar = tk.BooleanVar()
         self.smartPlacementModeVar.set(True)
-        self.enableSmartPlacement = tk.Checkbutton(checkboxFrame, text="Smart placement mode",
+        self.enableSmartPlacement = tk.Checkbutton(checkboxFrame, text="Game assistance",
                                               variable=self.smartPlacementModeVar,
                                               bg=checkboxColor, command=self.__smartPlacementModeCallback)
         self.enableSmartPlacement.pack(side=tk.BOTTOM, anchor=tk.W)

@@ -28,8 +28,8 @@ class MasyuInvalidPuzzleFileException(MasyuException):
 class MasyuOrphanedRegionException(MasyuException):
     def __init__(self, msg, startingLocation, endingLocation):
         super().__init__(msg)
-        self.startingLocation = startingLocation    # this is a tuple
-        self.endingLocation = endingLocation  # this is a tuple
+        self.startingLocation = startingLocation
+        self.endingLocation = endingLocation
 
     def __str__(self):
         return(self.msg + " : " + repr(self.startingLocation) + " - " + repr(self.endingLocation))
